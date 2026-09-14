@@ -1,0 +1,19 @@
+{
+  "name": "Beni affeder misin?",
+  "short_name": "Beni Affet",
+  "description": "Kalpten gelen küçük bir özür.",
+  "lang": "tr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#420716",
+  "theme_color": "#5b071d",
+  "icons": [
+    {
+      "src": "./assets/app-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

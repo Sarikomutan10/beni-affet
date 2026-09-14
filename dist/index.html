@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#5b071d" />
+    <meta name="description" content="Kalpten gelen küçük bir özür." />
+    <title>Beni affeder misin? ❤️</title>
+    <link rel="preconnect" href="https://w.soundcloud.com" />
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%235b071d'/%3E%3Cpath d='M32 53S10 40 10 23C10 12 24 8 32 19c8-11 22-7 22 4 0 17-22 30-22 30Z' fill='%23ffcad7'/%3E%3C/svg%3E" />
+    <style>
+      :root {
+        color-scheme: dark;
+        font-family: Georgia, "Times New Roman", serif;
+        --wine: #5b071d;
+        --rose: #ffcad7;
+        --cream: #fff8f5;
+        --gold: #f5c779;
+      }
+
+      * { box-sizing: border-box; }
+
+      html, body { min-height: 100%; }
+
+      body {
+        margin: 0;
+        min-height: 100svh;
+        overflow: hidden;
+        color: var(--cream);
+        background: #420716 url("./assets/romantic-bg.png") center / cover no-repeat fixed;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background: radial-gradient(circle at 50% 43%, rgba(65, 3, 21, .16), rgba(31, 0, 10, .64));
+        pointer-events: none;
+      }
+
+      .app {
+        position: relative;
+        z-index: 1;
+        min-height: 100svh;
+        display: grid;
+        place-items: center;
+        padding: max(1.25rem, env(safe-area-inset-top)) 1rem max(1.25rem, env(safe-area-inset-bottom));
+      }
+
+      .card {
+        width: min(92vw, 31rem);
+        min-height: min(38rem, 82svh);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: clamp(2rem, 8vw, 4.2rem) clamp(1.3rem, 6vw, 3rem);
+        text-align: center;
+        border: 1px solid rgba(255, 234, 220, .34);
+        border-radius: 2rem;
+        background: linear-gradient(155deg, rgba(81, 4, 29, .62), rgba(25, 0, 9, .52));
+        box-shadow: 0 1.8rem 5rem rgba(20, 0, 8, .48), inset 0 1px rgba(255, 255, 255, .16);
+        backdrop-filter: blur(9px);
+        -webkit-backdrop-filter: blur(9px);
+      }
+
+      .question-panel,
+      .success-panel { width: 100%; }
+
+      .question-panel[hidden],
+      .success-panel[hidden] { display: none; }
+
+      .eyebrow {
+        margin: 0 0 1.25rem;
+        color: var(--gold);
+        font: 600 .82rem/1.4 system-ui, sans-serif;
+        letter-spacing: .18em;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        max-width: 9ch;
+        margin: 0;
+        font-size: clamp(3rem, 13vw, 5.5rem);
+        font-weight: 500;
+        line-height: .95;
+        letter-spacing: -.055em;
+        text-wrap: balance;
+        text-shadow: 0 .35rem 1.8rem rgba(24, 0, 7, .55);
+      }
+
+      .message {
+        max-width: 28ch;
+        margin: 1.6rem 0 0;
+        color: rgba(255, 248, 245, .87);
+        font: 400 1.05rem/1.65 system-ui, sans-serif;
+      }
+
+      .actions {
+        position: relative;
+        width: 100%;
+        height: 8.5rem;
+        margin-top: 1.6rem;
+      }
+
+      button {
+        min-width: 8.2rem;
+        min-height: 3.55rem;
+        border: 0;
+        border-radius: 999px;
+        font: 750 1.05rem/1 system-ui, sans-serif;
+        cursor: pointer;
+        touch-action: manipulation;
+        transition: transform .22s ease, box-shadow .22s ease;
+      }
+
+      button:focus-visible { outline: 3px solid var(--gold); outline-offset: 4px; }
+
+      .yes-button {
+        position: absolute;
+        left: calc(50% - 8.9rem);
+        top: 1rem;
+        color: #5d071e;
+        background: linear-gradient(135deg, #fff7f5, #ffbecf);
+        box-shadow: 0 .65rem 2rem rgba(255, 166, 191, .35);
+        transform: scale(var(--yes-grow, 1));
+      }
+
+      .no-button {
+        position: absolute;
+        left: calc(50% + .7rem);
+        top: 1rem;
+        min-width: 7.5rem;
+        color: rgba(255, 255, 255, .88);
+        background: rgba(255, 255, 255, .1);
+        border: 1px solid rgba(255, 255, 255, .34);
+      }
+
+      .hint {
+        min-height: 1.4rem;
+        margin: .2rem 0 0;
+        color: rgba(255, 231, 220, .72);
+        font: 500 .88rem/1.4 system-ui, sans-serif;
+      }
+
+      .success-panel {
+        animation: reveal .7s cubic-bezier(.18, .82, .2, 1) both;
+      }
+
+      .success-heart {
+        display: inline-grid;
+        place-items: center;
+        width: 5.25rem;
+        height: 5.25rem;
+        margin-bottom: 1.4rem;
+        border: 1px solid rgba(255, 234, 220, .4);
+        border-radius: 50%;
+        background: rgba(255, 255, 255, .1);
+        box-shadow: 0 0 2.5rem rgba(255, 133, 168, .36);
+        font-size: 2.65rem;
+      }
+
+      .success-title {
+        max-width: none;
+        font-size: clamp(3.4rem, 15vw, 6rem);
+      }
+
+      .success-copy {
+        margin-bottom: 1.35rem;
+      }
+
+      .player-shell {
+        width: min(100%, 22rem);
+        overflow: hidden;
+        border: 1px solid rgba(255, 234, 220, .32);
+        border-radius: 1.1rem;
+        background: rgba(30, 0, 10, .45);
+        box-shadow: 0 1rem 2.8rem rgba(20, 0, 7, .36);
+      }
+
+      .player-label {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: .55rem;
+        margin: 0;
+        padding: .72rem 1rem;
+        color: rgba(255, 248, 245, .88);
+        font: 650 .86rem/1.3 system-ui, sans-serif;
+      }
+
+      .player-shell iframe {
+        display: block;
+        width: 100%;
+        height: 10.4rem;
+        border: 0;
+      }
+
+      .music-fallback {
+        display: inline-block;
+        margin-top: .9rem;
+        color: var(--rose);
+        font: 600 .88rem/1.4 system-ui, sans-serif;
+        text-underline-offset: .2em;
+      }
+
+      .celebration {
+        position: fixed;
+        inset: 0;
+        z-index: 5;
+        overflow: hidden;
+        pointer-events: none;
+      }
+
+      .floating-heart {
+        position: absolute;
+        bottom: -3rem;
+        animation: float-up var(--duration) ease-in var(--delay) forwards;
+        font-size: var(--size);
+        filter: drop-shadow(0 .25rem .4rem rgba(40, 0, 12, .25));
+      }
+
+      @keyframes reveal {
+        from { opacity: 0; transform: translateY(1.5rem) scale(.96); }
+        to { opacity: 1; transform: translateY(0) scale(1); }
+      }
+
+      @keyframes float-up {
+        0% { opacity: 0; transform: translate3d(0, 0, 0) rotate(-8deg) scale(.75); }
+        14% { opacity: .95; }
+        100% { opacity: 0; transform: translate3d(var(--drift), -115vh, 0) rotate(22deg) scale(1.18); }
+      }
+
+      @media (max-width: 390px) {
+        .card { min-height: 78svh; }
+        .actions { height: 10rem; }
+        .yes-button { left: 50%; top: .35rem; transform: translateX(-50%) scale(var(--yes-grow, 1)); }
+        .no-button { left: 50%; top: 5rem; transform: translateX(-50%); }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="app">
+      <section class="card" aria-labelledby="question">
+        <div class="question-panel" id="question-panel">
+          <p class="eyebrow">Kalbimden sana</p>
+          <h1 id="question">Beni affeder misin?</h1>
+          <p class="message">Seni üzmüş olmak içime sinmedi. Gülüşünü yeniden görebilir miyim?</p>
+          <div class="actions" id="actions">
+            <button class="yes-button" id="yes-button" type="button">Evet ❤️</button>
+            <button class="no-button" id="no-button" type="button" aria-describedby="hint">Hayır</button>
+          </div>
+          <p class="hint" id="hint" aria-live="polite">Doğru cevabı kalbin biliyor…</p>
+        </div>
+
+        <div class="success-panel" id="success-panel" aria-live="polite" hidden>
+          <div class="success-heart" aria-hidden="true">💞</div>
+          <p class="eyebrow">En güzel cevap</p>
+          <h1 class="success-title">Yuhuuu!</h1>
+          <p class="message success-copy">İyi ki varsın. Seni çok seviyorum! ❤️</p>
+          <div class="player-shell">
+            <p class="player-label"><span aria-hidden="true">♫</span> Nilüfer — Son Arzum</p>
+            <iframe
+              id="song-player"
+              title="Nilüfer — Son Arzum"
+              allow="autoplay; encrypted-media; picture-in-picture"
+              allowfullscreen
+              referrerpolicy="strict-origin-when-cross-origin"
+            ></iframe>
+          </div>
+          <a class="music-fallback" href="https://soundcloud.com/nilufer-scmusic/son-arzum" target="_blank" rel="noreferrer">Müzik başlamazsa buraya dokun ♫</a>
+        </div>
+      </section>
+    </main>
+    <div class="celebration" id="celebration" aria-hidden="true"></div>
+
+    <script>
+      const actions = document.querySelector("#actions");
+      const yesButton = document.querySelector("#yes-button");
+      const noButton = document.querySelector("#no-button");
+      const hint = document.querySelector("#hint");
+      const questionPanel = document.querySelector("#question-panel");
+      const successPanel = document.querySelector("#success-panel");
+      const player = document.querySelector("#song-player");
+      const celebration = document.querySelector("#celebration");
+
+      const hints = [
+        "Emin misin? Bir daha düşün 🥺",
+        "Hayır seçeneği biraz utangaç…",
+        "Bak, Evet gittikçe güzelleşiyor 💗",
+        "Kalbim senden yana…",
+        "Bence cevap belli ✨"
+      ];
+      let attempts = 0;
+
+      function moveNoButton(event) {
+        event?.preventDefault();
+        attempts += 1;
+
+        const area = actions.getBoundingClientRect();
+        const button = noButton.getBoundingClientRect();
+        const maxX = Math.max(0, area.width - button.width);
+        const maxY = Math.max(0, area.height - button.height);
+        let nextX = 0;
+        let nextY = 0;
+
+        for (let i = 0; i < 12; i += 1) {
+          nextX = Math.random() * maxX;
+          nextY = Math.random() * maxY;
+          const centerDistance = Math.hypot(nextX + button.width / 2 - area.width / 2, nextY + button.height / 2 - 2.1 * 16);
+          if (centerDistance > Math.min(125, area.width * .32)) break;
+        }
+
+        noButton.style.left = `${nextX}px`;
+        noButton.style.top = `${nextY}px`;
+        noButton.style.transform = "none";
+        noButton.style.transition = "left .24s cubic-bezier(.2,.8,.2,1), top .24s cubic-bezier(.2,.8,.2,1), transform .2s ease";
+        noButton.blur();
+
+        hint.textContent = hints[Math.min(attempts - 1, hints.length - 1)];
+        yesButton.style.setProperty("--yes-grow", Math.min(1.26, 1 + attempts * .045));
+      }
+
+      function launchHearts() {
+        const symbols = ["❤️", "💗", "💕", "✨", "🌹"];
+        for (let i = 0; i < 34; i += 1) {
+          const heart = document.createElement("span");
+          heart.className = "floating-heart";
+          heart.textContent = symbols[i % symbols.length];
+          heart.style.left = `${Math.random() * 100}%`;
+          heart.style.setProperty("--size", `${1 + Math.random() * 1.55}rem`);
+          heart.style.setProperty("--delay", `${Math.random() * 1.8}s`);
+          heart.style.setProperty("--duration", `${4.2 + Math.random() * 2.8}s`);
+          heart.style.setProperty("--drift", `${-70 + Math.random() * 140}px`);
+          celebration.appendChild(heart);
+        }
+        window.setTimeout(() => celebration.replaceChildren(), 9000);
+      }
+
+      function sayYes() {
+        questionPanel.hidden = true;
+        successPanel.hidden = false;
+        player.src = "https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/nilufer-scmusic/son-arzum&color=%23b71f55&auto_play=true&hide_related=true&show_comments=false&show_user=true&show_reposts=false&visual=false";
+        launchHearts();
+        navigator.vibrate?.([60, 40, 110]);
+        document.title = "Yuhuuu! ❤️";
+      }
+
+      ["pointerenter", "touchstart"].forEach((eventName) => noButton.addEventListener(eventName, moveNoButton, { passive: false }));
+      noButton.addEventListener("click", moveNoButton);
+      noButton.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" || event.key === " ") moveNoButton(event);
+      });
+      yesButton.addEventListener("click", sayYes);
+
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => navigator.serviceWorker.register("./service-worker.js"));
+      }
+    </script>
+  </body>
+</html>
