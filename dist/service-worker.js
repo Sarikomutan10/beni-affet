@@ -1,4 +1,4 @@
-const CACHE_NAME = "beni-affet-v3";
+const CACHE_NAME = "beni-affet-v4";
 const APP_FILES = ["./", "./index.html", "./manifest.webmanifest", "./assets/app-icon.svg", "./assets/romantic-bg.png"];
 
 self.addEventListener("install", (event) => {
